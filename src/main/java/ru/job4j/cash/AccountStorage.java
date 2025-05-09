@@ -31,16 +31,18 @@ public class AccountStorage {
     }
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
-        if (!accounts.containsKey(fromId)) {
+        Optional<Account> fromAccount = getById(fromId);
+        Optional<Account> toAccount = getById(toId);
+        if (fromAccount.isEmpty()) {
             throw new IllegalStateException("Not found account by id = 1");
         }
-        if (!accounts.containsKey(toId)) {
+        if (toAccount.isEmpty()) {
             throw new IllegalStateException("Not found account by id = 2");
         }
-        if (accounts.get(fromId).amount() < amount) {
+        if (fromAccount.get().amount() < amount) {
             throw new IllegalStateException("The amount on the account is less than requested");
         }
-        return accounts.put(fromId, new Account(fromId, accounts.get(fromId).amount() - amount)) != null
-                && accounts.put(toId, new Account(toId, accounts.get(toId).amount() + amount)) != null;
+        return update(new Account(fromId, fromAccount.get().amount() - amount))
+                && update(new Account(toId, toAccount.get().amount() + amount));
     }
 }
