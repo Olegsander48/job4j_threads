@@ -34,8 +34,8 @@ public class Wget implements Runnable {
                 double downloadSpeed = (double) (bytesRead * 1_000_000) / downloadTime;
                 System.out.printf("Download speed %.2f bytes/ms\n", downloadSpeed);
                 if (downloadSpeed > speed) {
-                    Thread.sleep(Math.round(downloadSpeed / speed));
-                    System.out.println("thread stopped for " + Math.round(downloadSpeed / speed) + "ms");
+                    Thread.sleep(Math.round((downloadSpeed / speed) - 1));
+                    System.out.println("thread stopped for " + Math.round((downloadSpeed / speed) - 1) + "ms");
                 }
             }
         } catch (IOException e) {
