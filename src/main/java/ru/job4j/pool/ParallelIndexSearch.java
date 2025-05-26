@@ -29,7 +29,7 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
         return task1.join() != -1 ? task1.join() : task2.join();
     }
 
-    public Integer search() {
+    public int search() {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         return forkJoinPool.invoke(new ParallelIndexSearch<>(array, element, 0, array.length - 1));
     }
